@@ -2,18 +2,16 @@ defmodule Clickhousex.Helpers do
   @moduledoc false
 
   @doc false
+  def bind_query_params(query, params) when (length(params) == 0) do
+    query
+  end
   def bind_query_params(query, params) do
     query_parts = String.split(query, "?")
     case length(query_parts) do
       1 ->
-        case length(params) do
-          0 ->
-            query
-          _ ->
-            raise ArgumentError, "Extra params! Query don't contain '?'"
-        end
+        raise ArgumentError, "Extra params! Query don't contain '?'"
       len ->
-        if (len-1) != length(params) do
+        if (len - 1) != length(params) do
           raise ArgumentError, "The number of parameters does not correspond to the number of question marks!"
         end
         param_for_query(query_parts, params)
